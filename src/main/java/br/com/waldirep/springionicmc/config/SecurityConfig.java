@@ -19,6 +19,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import br.com.waldirep.springionicmc.security.JWTAuthenticationFilter;
+import br.com.waldirep.springionicmc.security.JWTAuthorizationFilter;
 import br.com.waldirep.springionicmc.security.JWTUtil;
 
 /**
@@ -72,7 +73,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll() //Permissão apenas para o mrthod GET para os usuarios desta lista
 		.antMatchers(PUBLIC_MATCHERS).permitAll() 
 		.anyRequest().authenticated(); // Libera o acesso as URLs do vetor e para todo resto exige autenticação
-		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil)); // registrando o filtro
+		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil)); // registrando o filtro de autenticação
+		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService)); // registrando o filtro de autorização
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // Garante que não sera criada sessão de usuario
 	}
 	
