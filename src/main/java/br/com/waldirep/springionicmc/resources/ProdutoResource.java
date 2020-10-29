@@ -30,7 +30,13 @@ public class ProdutoResource {
 	@Autowired
 	private ProdutoService service;
 	
-	
+	/**
+	 * Método que busca todos os produtos
+	 * 
+	 * ENDPOINT Liberado para acesso de TODOS os USUARIOS
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET) // Este END POINT recebe /pedidos/id ( Recebe o id digitado )
 	public ResponseEntity<Produto> find (@PathVariable Integer id) {     // O END POINT recebe o id da URL atraves da anotação @PathVariable
 		
@@ -41,7 +47,9 @@ public class ProdutoResource {
 	
 	
 	/**
-	 * EndPoint de paginação
+	 * Método de paginação
+	 * 
+	 * ENDPOINT Liberado para acesso de TODOS os USUARIOS
 	 * 
 	 * @RequestParam -> deixa os parametros opicionais
 	 * linesPerPage ->  A sugestão é colocar 24 pq ele é multiplo de 1,2,3 e 4

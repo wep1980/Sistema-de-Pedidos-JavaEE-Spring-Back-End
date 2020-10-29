@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.waldirep.springionicmc.domain.Categoria;
 import br.com.waldirep.springionicmc.domain.Pedido;
-import br.com.waldirep.springionicmc.dto.CategoriaDTO;
 import br.com.waldirep.springionicmc.services.PedidoService;
 
 
@@ -27,7 +25,13 @@ public class PedidoResource {
 	@Autowired
 	private PedidoService service;
 	
-	
+	/**
+	 * Método que busca um pedido
+	 * 
+	 * ENDPOINT de acesso para clientes logados, eles podem acessar o proprio pedido
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET) // Este END POINT recebe /pedidos/id ( Recebe o id digitado )
 	public ResponseEntity<Pedido> find (@PathVariable Integer id) {     // O END POINT recebe o id da URL atraves da anotação @PathVariable
 		
@@ -38,6 +42,10 @@ public class PedidoResource {
 	
 	
 	/**
+	 * Método que insere um pedido
+	 * 
+	 * ENDPOINT de acesso para clientes logados, eles podem acessar o proprio pedido
+	 * 
 	 * RequestMethod.POST -> Insere
 	 * O método save retorna um objeto
 	 * Para o objeto ser construído a partir dos dados JSON enviado é necessario colocar a anotação @RequestBody

@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +32,13 @@ public class ClienteResources {
 	@Autowired
 	private ClienteService service;
 	
-	
+	/**
+	 * Método que busca um USUARIO
+	 * 
+	 * ENDPOINT de acesso para clientes logados, eles podem acessar somente eles mesmo
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET) // Este END POINT recebe /categorias/id ( Recebe o id digitado )
 	public ResponseEntity<Cliente> find (@PathVariable Integer id) {     // O END POINT recebe o id da URL atraves da anotação @PathVariable
 		
@@ -42,6 +49,8 @@ public class ClienteResources {
 	
 	
 	/**
+	 * ENDPOINT liberado para TODOS os USUARIOS
+	 * 
 	 * RequestMethod.POST -> Insere
 	 * O método save retorna um objeto
 	 * Para o objeto ser construído a partir dos dados JSON enviado é necessario colocar a anotação @RequestBody
@@ -60,6 +69,10 @@ public class ClienteResources {
 	
 	
 	/**
+	 * ENDPOINT liberado para alterações somente para USUARIOS CADASTRADOS e sendo o proprio
+	 * 
+	 * Método que atualiza 
+	 * 
 	 * @RequestBody Cliente id => recebe o objeto JSON
 	 *  @PathVariable Integer id => Recebe o paramêtro na URL
 	 * @return
@@ -74,7 +87,14 @@ public class ClienteResources {
 		return ResponseEntity.noContent().build();
 	}
 	
-	
+	/**
+	 * ENDPOINT de acesso apenas para ADMIN
+	 * 
+	 * Método que apaga um USUARIO
+	 * @param id
+	 * @return
+	 */
+	@PreAuthorize("hasAnyRole('ADMIN')") // Autorização por perfil -> Apenas quem é ADMIN tem acesso -> Configurado na classe securityConfig com @EnableGlobalMethodSecurity(prePostEnabled = true)
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)  
 	public ResponseEntity<Void> delete (@PathVariable Integer id) {  
 		
@@ -84,6 +104,13 @@ public class ClienteResources {
 	}
 	
 	
+	/**
+	 * ENDPOINT de acesso apenas para ADMIN
+	 * 
+	 * Método que lista todos os USUARIOS
+	 * @return
+	 */
+	@PreAuthorize("hasAnyRole('ADMIN')") // Autorização por perfil -> Apenas quem é ADMIN tem acesso -> Configurado na classe securityConfig com @EnableGlobalMethodSecurity(prePostEnabled = true)
 	@RequestMapping(method = RequestMethod.GET)  
 	public ResponseEntity<List<ClienteDTO>> findAll () {  
 		
@@ -101,9 +128,12 @@ public class ClienteResources {
 		return ResponseEntity.ok().body(listDto);
 	}
 	
+	
 
 	/**
-	 * EndPoint de paginação
+	 * Método de paginação
+	 * 
+	 * ENDPOINT de acesso apenas para ADMIN
 	 * 
 	 * @RequestParam -> deixa os parametros opicionais
 	 * linesPerPage ->  A sugestão é colocar 24 pq ele é multiplo de 1,2,3 e 4
@@ -116,6 +146,7 @@ public class ClienteResources {
 	 * @param direction
 	 * @return
 	 */
+	@PreAuthorize("hasAnyRole('ADMIN')") // Autorização por perfil -> Apenas quem é ADMIN tem acesso -> Configurado na classe securityConfig com @EnableGlobalMethodSecurity(prePostEnabled = true)
 	@RequestMapping(value ="/page",  method = RequestMethod.GET)  
 	public ResponseEntity<Page<ClienteDTO>> findPage (
 			@RequestParam(value = "page", defaultValue = "0") Integer page, 
