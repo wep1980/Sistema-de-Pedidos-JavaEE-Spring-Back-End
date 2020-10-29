@@ -4,9 +4,13 @@ import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.waldirep.springionicmc.domain.Cliente;
 import br.com.waldirep.springionicmc.domain.ItemPedido;
 import br.com.waldirep.springionicmc.domain.PagamentoComBoleto;
 import br.com.waldirep.springionicmc.domain.Pedido;
@@ -14,6 +18,8 @@ import br.com.waldirep.springionicmc.domain.unums.EstadoPagamento;
 import br.com.waldirep.springionicmc.repositories.ItemPedidoRepository;
 import br.com.waldirep.springionicmc.repositories.PagamentoRepository;
 import br.com.waldirep.springionicmc.repositories.PedidoRepository;
+import br.com.waldirep.springionicmc.security.UserSS;
+import br.com.waldirep.springionicmc.services.exceptions.AuthorizationException;
 import br.com.waldirep.springionicmc.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -87,35 +93,31 @@ public class PedidoService {
 	
 	
 	
+	/**
+	 * Método de paginação
+	 * 
+	 * OBS : direction -> retorna uma String então é feita a conversão Direction.valueOf(direction)
+	 * 
+	 * @param page
+	 * @param linesPerPage
+	 * @param orderBy
+	 * @param direction
+	 * @return
+	 */
+	public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+		
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		UserSS user = UserService.authenticade(); // Pegando o usuario logado e verificando se não esta nulo
+		if(user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		
+		// Retornando somente os pedidos do USUARIO logado
+		Cliente cliente =  clienteService.find(user.getId()); // Pegando o cliente logado
+		return pedidoRepository.findByCliente(cliente, pageRequest); // Retorna os pedidos do cliente
+		
+	}
 
 }
