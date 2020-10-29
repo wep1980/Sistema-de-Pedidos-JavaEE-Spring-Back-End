@@ -50,12 +50,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			"/h2-console/**"
 			};
 	
-	// Caminhos que por padrão estão liberados apenas para recuperação de dados
+	
+	// Caminhos que por padrão estão liberados para acesso a TODOS os USUARIOS, apenas para recuperação de dados
 		private static final String[] PUBLIC_MATCHERS_GET = {
 				"/produtos/**", 
-				"/categorias/**",
-				"/clientes/**"
+				"/categorias/**"
 				};
+		
+		
+		/*
+		 * Para acesso a todos os ENDPOINTS e preciso estar logado,
+		 * porem um usuario não logado pode se cadastrar no sistema.
+		 * 
+		 * Permite que usuarios não cadastrados utilizem ENDPOINTs 
+		 * especificos. Nesse caso somente para cadastro.
+		 */
+		private static final String[] PUBLIC_MATCHERS_POST = {
+				"/clientes/**", 
+				};
+		
 	
 	/**
 	 * Método que configura as autorizações recebe um HttpSecurity
@@ -72,6 +85,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		http.cors().and().csrf().disable(); // como o sistema e stateless e não armazena a autenticação em sessão o csrf foi desabilitado
 		http.authorizeRequests()
+		.antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll() //Permite autorização de POST, no caso o vetor tem apenas clientes
 		.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll() //Permissão apenas para o mrthod GET para os usuarios desta lista
 		.antMatchers(PUBLIC_MATCHERS).permitAll() 
 		.anyRequest().authenticated(); // Libera o acesso as URLs do vetor e para todo resto exige autenticação

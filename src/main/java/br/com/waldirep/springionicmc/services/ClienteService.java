@@ -15,11 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.waldirep.springionicmc.domain.Cidade;
 import br.com.waldirep.springionicmc.domain.Cliente;
 import br.com.waldirep.springionicmc.domain.Endereco;
+import br.com.waldirep.springionicmc.domain.unums.Perfil;
 import br.com.waldirep.springionicmc.domain.unums.TipoCliente;
 import br.com.waldirep.springionicmc.dto.ClienteDTO;
 import br.com.waldirep.springionicmc.dto.ClienteNewDTO;
 import br.com.waldirep.springionicmc.repositories.ClienteRepository;
 import br.com.waldirep.springionicmc.repositories.EnderecoRepository;
+import br.com.waldirep.springionicmc.security.UserSS;
+import br.com.waldirep.springionicmc.services.exceptions.AuthorizationException;
 import br.com.waldirep.springionicmc.services.exceptions.DataIntegrityException;
 import br.com.waldirep.springionicmc.services.exceptions.ObjectNotFoundException;
 
@@ -39,7 +42,23 @@ public class ClienteService {
 	@Autowired
 	private EnderecoRepository enderecoRepository;	
 	
+	
+	
+	/**
+	 * Método que busca um USUARIO por ID
+	 * 
+	 * @param id
+	 * @return
+	 */
 	public Cliente find(Integer id) {
+		
+		/*
+		 * Regra de negócio que verifica se existe um usuario logado
+		 */
+		UserSS user = UserService.authenticade(); // Pega o usuario logado
+		if(user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) { // ( Se o USUARIO logado for igual a null ou nao tiver o perfil de ADMIN ) e o ID não for o do USUARIO logado
+			throw new AuthorizationException("Acesso negado");
+		}
 		
 		Optional<Cliente> cliente = clienteRepository.findById(id);
 		

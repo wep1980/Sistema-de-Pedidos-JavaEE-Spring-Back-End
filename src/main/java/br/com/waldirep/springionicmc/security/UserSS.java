@@ -112,4 +112,17 @@ public class UserSS implements UserDetails{
 		return true;
 	}
 
+
+	/**
+	 * Método que testa se o USUARIO que esta logando tem um dado perfil
+	 * 
+	 * getAuthorities().contains() -> Acessa a lista de perfis
+	 * (new SimpleGrantedAuthority(perfil.getDescricao()) -> Converte o perfil para o tipo GrantedAuthority do SpringSecurity
+	 * @param perfil
+	 * @return
+	 */
+	public boolean hasRole(Perfil perfil) {
+		return getAuthorities().contains(new SimpleGrantedAuthority(perfil.getDescricao()));
+	}
+
 }
