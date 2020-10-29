@@ -107,7 +107,7 @@ public class PedidoService {
 	public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
 		
 	
-		UserSS user = UserService.authenticade(); // Pegando o usuario logado e verificando se não esta nulo
+		UserSS user = UserService.authenticated(); // Pegando o usuario logado e verificando se não esta nulo
 		if(user == null) {
 			throw new AuthorizationException("Acesso negado");
 		}

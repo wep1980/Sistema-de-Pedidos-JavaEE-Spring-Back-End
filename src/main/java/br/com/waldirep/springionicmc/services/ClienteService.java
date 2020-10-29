@@ -55,7 +55,7 @@ public class ClienteService {
 		/*
 		 * Regra de negócio que verifica se existe um usuario logado
 		 */
-		UserSS user = UserService.authenticade(); // Pega o usuario logado
+		UserSS user = UserService.authenticated(); // Pega o usuario logado
 		if(user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) { // ( Se o USUARIO logado for igual a null ou nao tiver o perfil de ADMIN ) e o ID não for o do USUARIO logado
 			throw new AuthorizationException("Acesso negado");
 		}

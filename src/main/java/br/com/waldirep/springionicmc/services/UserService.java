@@ -16,7 +16,7 @@ public class UserService {
 	 * 
 	 * @return
 	 */
-	public static UserSS authenticade() {
+	public static UserSS authenticated() {
 		try {
 			// Retorna o usuario que estiver logado no sistema
 			return (UserSS) SecurityContextHolder.getContext().getAuthentication().getPrincipal(); 
