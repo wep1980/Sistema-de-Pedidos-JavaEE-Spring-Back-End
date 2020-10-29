@@ -13,6 +13,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import br.com.waldirep.springionicmc.domain.Cliente;
 import br.com.waldirep.springionicmc.domain.Pedido;
 
 public abstract class AbstractEmailService implements EmailService {
@@ -32,7 +33,8 @@ public abstract class AbstractEmailService implements EmailService {
 	
 	
 	/**
-	 * Metodo de envio de confirmação de email Envio de texto plano
+	 * Metodo de envio de confirmação de pedido
+	 * Envio do email de texto plano
 	 */
 	@Override
 	public void sendOrderConfirmationEmail(Pedido obj) {
@@ -40,6 +42,8 @@ public abstract class AbstractEmailService implements EmailService {
 		SimpleMailMessage sm = prepareSimpleMailMessageFromPedido(obj);
 		sendEmail(sm);
 	}
+	
+	
 
 	protected SimpleMailMessage prepareSimpleMailMessageFromPedido(Pedido obj) {
 
@@ -113,8 +117,32 @@ public abstract class AbstractEmailService implements EmailService {
          mmh.setSentDate(new Date(System.currentTimeMillis())); // Data e hora do email
          mmh.setText(htmlFromTemplatePedido(obj), true); // Corpo do email
          
-         
          return mimeMessage;
+	}
+	
+	
+	/**
+	 * Metodo que envia uma nova senha para o email do usuario
+	 */
+	@Override
+	public void sendNewPasswordEmail(Cliente cliente, String newPass) {
+		SimpleMailMessage sm = prepareNewPasswordEmail(cliente, newPass);
+		sendEmail(sm);
+	}
+
+
+
+	protected SimpleMailMessage prepareNewPasswordEmail(Cliente cliente, String newPass) {
+		
+		SimpleMailMessage sm = new SimpleMailMessage();
+
+		sm.setTo(cliente.getEmail()); // Destinatario do email
+		sm.setFrom(sender); // remetente do email
+		sm.setSubject("Solicitação de nova senha"); // Assunto do email
+		sm.setSentDate(new Date(System.currentTimeMillis())); // Data do email com horario do servidor
+		sm.setText("Nova senha: " + newPass); // Corpo do email
+
+		return sm;
 	}
 
 }

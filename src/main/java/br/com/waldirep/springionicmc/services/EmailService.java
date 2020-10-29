@@ -6,6 +6,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.springframework.mail.SimpleMailMessage;
 
+import br.com.waldirep.springionicmc.domain.Cliente;
 import br.com.waldirep.springionicmc.domain.Pedido;
 
 /**
@@ -29,5 +30,8 @@ public interface EmailService {
 	void sendOrderConfirmationHtmlEmail(Pedido obj);
 	
 	void sendHtmlEmail(MimeMessage msg);
+
+	// Envia uma nova senha para o email do usuario
+	void sendNewPasswordEmail(Cliente cliente, String newPass);
 
 }

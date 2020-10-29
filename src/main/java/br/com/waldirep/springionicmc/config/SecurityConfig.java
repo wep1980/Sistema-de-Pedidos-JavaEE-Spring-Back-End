@@ -59,14 +59,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		
 		/*
-		 * Para acesso a todos os ENDPOINTS e preciso estar logado,
-		 * porem um usuario não logado pode se cadastrar no sistema.
+		 * Para acesso a todos os ENDPOINTS e preciso estar logado porem um
+		 * USUARIO não logado pode se cadastrar no sistema.
+		 * USUARIO não logado pode recuperar sua senha.
 		 * 
 		 * Permite que usuarios não cadastrados utilizem ENDPOINTs 
-		 * especificos. Nesse caso somente para cadastro.
+		 * especificos. Nesse caso somente para cadastro e recuperação de senha.
 		 */
 		private static final String[] PUBLIC_MATCHERS_POST = {
-				"/clientes/**", 
+				"/clientes/**",
+				"/auth/forgot/**"
 				};
 		
 	
