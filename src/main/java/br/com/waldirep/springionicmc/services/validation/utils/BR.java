@@ -1,5 +1,10 @@
 package br.com.waldirep.springionicmc.services.validation.utils;
 
+/**
+ * Classe de validação de CPF ou CNPJ
+ * @author wepbi
+ *
+ */
 public class BR {
 
 	// Fonte: https://gist.github.com/adrianoluis/5043397d378ae506d87366abb0ab4e30

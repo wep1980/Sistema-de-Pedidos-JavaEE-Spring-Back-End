@@ -67,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		 * especificos. Nesse caso somente para cadastro e recuperação de senha.
 		 */
 		private static final String[] PUBLIC_MATCHERS_POST = {
-				"/clientes/**",
+				"/clientes",
 				"/auth/forgot/**"
 				};
 		

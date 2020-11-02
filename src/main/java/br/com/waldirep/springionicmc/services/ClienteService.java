@@ -1,9 +1,12 @@
 package br.com.waldirep.springionicmc.services;
 
+import java.awt.image.BufferedImage;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,6 +14,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.com.waldirep.springionicmc.domain.Cidade;
 import br.com.waldirep.springionicmc.domain.Cliente;
@@ -40,7 +44,21 @@ public class ClienteService {
 	private ClienteRepository clienteRepository;
 
 	@Autowired
-	private EnderecoRepository enderecoRepository;	
+	private EnderecoRepository enderecoRepository;
+	
+	@Autowired
+	private S3Service s3Service;
+	
+	@Autowired
+	private ImageService imageService;
+	
+	// Pegando o valor da configuração do arquivo application.properties
+	@Value("${img.prefix.client.profile}")
+	private String prefix;
+	
+	// Pegando o valor da configuração do arquivo application.properties
+	@Value("${img.profile.size}")
+	private Integer size;
 	
 	
 	
@@ -188,88 +206,24 @@ public class ClienteService {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-	
+	// Metodo que faz upload da foto do cliente -- Repassa a chamada para o S3Service -- Salva a imagem no cliente 
+	public URI uploadProfilePicture(MultipartFile multipartFile) {
+		
+		UserSS user = UserService.authenticated(); // Pega o usuario logado
+		if(user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		
+		BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+		
+		jpgImage = imageService.cropSquare(jpgImage); // Metodo que recorta a imagem e deixa quadrada
+		jpgImage = imageService.resize(jpgImage, size); // Método que define o tamanho da imagem
+		
+		// Montando o arquivo personalizado com base no cliente que esta logado
+		String fileName = prefix + user.getId() + ".jpg";
+		
+		return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
+		
+	}
 
 }

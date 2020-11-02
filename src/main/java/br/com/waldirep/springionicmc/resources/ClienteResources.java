@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.waldirep.springionicmc.domain.Cliente;
@@ -160,5 +161,25 @@ public class ClienteResources {
 		
 		return ResponseEntity.ok().body(pageDto);
 	}
+	
+	
+	
+	/**
+	 * Método ENDPOINT - Para o envio de uma imagem de um cliente
+	 * 
+	 * @RequestParam(name="file") -> Recebe um parametro da requisição HTTP
+	 * @param file
+	 * @return
+	 */
+	@RequestMapping(value = "/picture", method = RequestMethod.POST)
+	public ResponseEntity<Void> uploadProfilepicture(@RequestParam(name="file") MultipartFile file){
+		
+		URI uri = service.uploadProfilePicture(file);
+		
+		return ResponseEntity.created(uri).build();
+	}
+
+	
+	
 
 }
