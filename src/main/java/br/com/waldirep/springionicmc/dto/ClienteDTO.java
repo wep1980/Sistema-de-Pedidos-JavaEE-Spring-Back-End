@@ -34,6 +34,10 @@ public class ClienteDTO implements Serializable{
 	}
 	
 	
+	/**
+	 * Construtor que recebe um Cliente como parametro
+	 * @param obj
+	 */
 	public ClienteDTO(Cliente obj) {
 		id = obj.getId();
 		nome = obj.getNome();

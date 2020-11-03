@@ -51,10 +51,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			};
 	
 	
-	// Caminhos que por padrão estão liberados para acesso a TODOS os USUARIOS, apenas para recuperação de dados
+	    /**
+	     * Caminhos que por padrão estão liberados para acesso a TODOS os USUARIOS, apenas para recuperação de dados
+	     * produtos e categorias -> todos os usuarios podem consultar os produtos disponives e suas categorias
+	     * Estados -> na hora de se cadastrar um novo usuario pode acessar o seu estado
+	     */
 		private static final String[] PUBLIC_MATCHERS_GET = {
 				"/produtos/**", 
-				"/categorias/**"
+				"/categorias/**",
+				"/estados/**"
 				};
 		
 		
