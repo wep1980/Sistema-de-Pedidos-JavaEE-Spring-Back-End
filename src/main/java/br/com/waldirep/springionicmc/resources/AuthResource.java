@@ -48,6 +48,8 @@ public class AuthResource {
 		UserSS user = UserService.authenticated(); // Pega o usuario logado
 		String token = jwtUtil.generateToken(user.getUsername()); // Gera um novo token para o usuario
 		response.addHeader("Authorization", "Bearer " + token); // Adiciona o token na resposta da requisição
+		response.addHeader("access-control-expose-headers", "Authorization"); // Liberação de CORS, deixa o cabeçalho exposto. Liberação de recursos vindas de requisições diferentes
+		
 		return ResponseEntity.noContent().build();
 	}
 	

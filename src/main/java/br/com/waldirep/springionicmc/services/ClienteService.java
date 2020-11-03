@@ -136,10 +136,37 @@ public class ClienteService {
 		
 	}
 
+	/**
+	 * Metodo que retorna todos os clientes
+	 * @return
+	 */
 	public List<Cliente> findAll() {
 
 		return clienteRepository.findAll();
 	}
+	
+	
+	/**
+	 * Metodo que retorna um cliente por email
+	 * Nossa aplicação armazena o token e o carrinho de compras.
+	 * O Token carrega dentro dele o nome de usuario(email) e o tempo de expiração
+	 * @param email
+	 * @return
+	 */
+	public Cliente findByEmail(String email) {
+		
+		UserSS user = UserService.authenticated(); // Pega o usuario logado
+		if(user == null || !user.hasRole(Perfil.ADMIN) && !email.equals(user.getUsername())) { // ( Se o USUARIO logado for igual a null ou nao tiver o perfil de ADMIN ) e o EMAIL não for o do USUARIO logado
+			throw new AuthorizationException("Acesso negado");
+		}
+		
+		Cliente obj = clienteRepository.findByEmail(email);
+		if(obj == null) {
+			throw new ObjectNotFoundException("Objeto não encontrado! Id: " + user.getId() + ", Tipo: " + Cliente.class.getName());
+		}
+		return obj;
+	}
+	
 	
 	
 	/**

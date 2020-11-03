@@ -50,6 +50,23 @@ public class ClienteResources {
 	
 	
 	/**
+	 * Metodo que busca por email
+	 * 
+	 * ENDPOINT que retorna um email, recebendo como parametro o email digitado pelo usuario
+	 * @param email
+	 * @return
+	 */
+	@RequestMapping(value = "/email", method = RequestMethod.GET) // Este END POINT recebe /categorias/id ( Recebe o id digitado )
+	public ResponseEntity<Cliente> find (@RequestParam(value = "value") String email) {     // O END POINT recebe o id da URL atraves da anotação @PathVariable
+		
+		Cliente cliente = service.findByEmail(email);
+		
+		return ResponseEntity.ok().body(cliente);
+	}
+	
+	
+	
+	/**
 	 * ENDPOINT liberado para TODOS os USUARIOS
 	 * 
 	 * RequestMethod.POST -> Insere

@@ -84,6 +84,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		String username  = ((UserSS) auth.getPrincipal()).getUsername();
 		String token = jwtUtil.generateToken(username); // gera o token e passa para o email
 		res.addHeader("Authorization", "Bearer " + token); // retorna o token na resposta da requisição acrescentando ele como cabeçalho da resposta
+		res.addHeader("access-control-expose-headers", "Authorization"); // Liberação de CORS, deixa o cabeçalho exposto. Liberação de recursos vindas de requisições diferentes
 	}
 	
 	
