@@ -87,6 +87,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		res.addHeader("access-control-expose-headers", "Authorization"); // Liberação de CORS, deixa o cabeçalho exposto. Liberação de recursos vindas de requisições diferentes
 	}
 	
+
+	
 	
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
 	

@@ -93,7 +93,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.cors().and().csrf().disable(); // como o sistema e stateless e não armazena a autenticação em sessão o csrf foi desabilitado
 		http.authorizeRequests()
 		.antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll() //Permite autorização de POST, no caso o vetor tem apenas clientes
-		.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll() //Permissão apenas para o mrthod GET para os usuarios desta lista
+		.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll() //Permissão apenas para o method GET para os usuarios desta lista
 		.antMatchers(PUBLIC_MATCHERS).permitAll() 
 		.anyRequest().authenticated(); // Libera o acesso as URLs do vetor e para todo resto exige autenticação
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil)); // registrando o filtro de autenticação
@@ -112,6 +112,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
 	}
 	
+	
 	/**
 	 * Método que configura os Cors
 	 *  A anotação com @Bean torna disponivel esse método como componente do sistema
@@ -119,8 +120,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	 */
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
+		
+		final CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
+		
+		// "OPTIONS" -> Método que os front-ends utilizam para testar a primeira requisição
+		configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE", "OPTIONS"));
+		
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}
     
