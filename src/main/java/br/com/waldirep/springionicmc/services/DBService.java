@@ -222,15 +222,17 @@ public class DBService {
 		
 		Estado est1 = new Estado(null, "Minas gerais");
 		Estado est2 = new Estado(null, "São paulo");
+		Estado est3 = new Estado(null, "Rio de janeiro");
 		
-		Cidade c1 = new Cidade(null, "Uberlandia", est1);
+		Cidade c1 = new Cidade(null, "Belo horizonte", est1);
 		Cidade c2 = new Cidade(null, "São paulo", est2);
-		Cidade c3 = new Cidade(null, "Rio de janeiro", est2);
+		Cidade c3 = new Cidade(null, "Rio de janeiro", est3);
 		
 		est1.getCidades().addAll(Arrays.asList(c1));
-	    est2.getCidades().addAll(Arrays.asList(c2, c3));
+	    est2.getCidades().addAll(Arrays.asList(c2));
+	    est3.getCidades().addAll(Arrays.asList(c3));
 		
-		estadoRepository.saveAll(Arrays.asList(est1, est2)); // Primeiro salva os estados e depois as cidades
+		estadoRepository.saveAll(Arrays.asList(est1, est2, est3)); // Primeiro salva os estados e depois as cidades
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 		
 		
