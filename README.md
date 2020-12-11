@@ -29,6 +29,7 @@ A aplicação realiza o cadastro de usuário e pesquisa de produtos por categori
 - Thymeleaf
 - Padrão de projeto (Strategy, Template Method)
 - Postman
+- DTO
 ## Front end
 - HTML / CSS / JS / TypeScript
 - Ionic
